@@ -38,7 +38,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/quantum-timetable.git
+git clone https://github.com/ayush-py-c/quantum-timetable.git
 cd quantum-timetable
 ```
 
