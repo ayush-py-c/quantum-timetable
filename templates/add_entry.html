@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Entry</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600&display=swap">
+  <style>
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    
+    h1, h2, h3 {
+      font-family: 'Orbitron', sans-serif;
+    }
+    
+    .neon-glow {
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.7), 
+                   0 0 20px rgba(56, 189, 248, 0.5);
+    }
+    
+    .card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 8px 32px rgba(2, 6, 23, 0.3), 
+                  0 0 15px rgba(56, 189, 248, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .form-input {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: rgba(56, 189, 248, 0.8);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+    
+    .form-input::placeholder {
+      color: rgba(226, 232, 240, 0.5);
+    }
+    
+    .btn-submit {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.7);
+    }
+    
+    .btn-submit::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: rotate(30deg);
+      transition: all 0.5s ease;
+    }
+    
+    .btn-submit:hover::after {
+      left: 100%;
+    }
+    
+    .btn-back {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-back:hover {
+      background: rgba(56, 189, 248, 0.2);
+    }
+    
+    .input-group {
+      position: relative;
+    }
+    
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 1rem;
+      color: rgba(56, 189, 248, 0.7);
+    }
+    
+    .input-with-icon {
+      padding-left: 2.5rem;
+    }
+  </style>
+</head>
+<body class="p-6">
+  <div class="max-w-lg mx-auto">
+    <header class="mb-8 text-center">
+      <h1 class="text-3xl font-bold mb-4 neon-glow tracking-wider">ADD ENTRY</h1>
+      <div class="h-1 w-24 bg-gradient-to-r from-sky-400 to-blue-500 mx-auto rounded-full mb-6"></div>
+      <p class="text-sky-200 opacity-80">Create New Timetable Record</p>
+    </header>
+    
+    <div class="card rounded-xl p-8 mb-8">
+      <form method="post" class="space-y-6">
+        <div class="input-group">
+          <div class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <input name="user_id" placeholder="User ID" class="form-input input-with-icon rounded-lg p-3 w-full" required>
+        </div>
+        
+        <div class="input-group">
+          <div class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+            </svg>
+          </div>
+          <input name="course_id" placeholder="Course ID" class="form-input input-with-icon rounded-lg p-3 w-full" required>
+        </div>
+        
+        <div class="input-group">
+          <div class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+            </svg>
+          </div>
+          <input name="teacher_id" placeholder="Teacher ID" class="form-input input-with-icon rounded-lg p-3 w-full" required>
+        </div>
+        
+        <div class="input-group">
+          <div class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <input name="date_and_time" type="datetime-local" class="form-input input-with-icon rounded-lg p-3 w-full text-sky-100" required>
+        </div>
+        
+        <div class="flex space-x-4 pt-4">
+          <a href="/" class="btn-back text-sky-300 px-4 py-3 rounded-lg font-semibold flex items-center justify-center w-1/3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Back
+          </a>
+          <button type="submit" class="btn-submit text-white px-4 py-3 rounded-lg font-semibold flex items-center justify-center w-2/3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Add Entry
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <footer class="text-center text-sky-200/60 text-sm mt-12">
+      <p>© 2025 Quantum Timetable System • All rights reserved</p>
+    </footer>
+  </div>
+</body>
+</html>
