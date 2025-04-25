@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: quantum-timetable
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: DATABASE_URL
+        value: mysql://root:YHwYuhkYhEKsOuxhDQVcMhemgTMdDbKU@switchback.proxy.rlwy.net:59007/railway
+      - key: FLASK_ENV
+        value: production
