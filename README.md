@@ -130,6 +130,4 @@ quantum-timetable/
 
 ---
 
-## 📄 License
 
-MIT License. See `LICENSE` file for more details.
