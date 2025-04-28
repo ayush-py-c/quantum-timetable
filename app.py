@@ -9,7 +9,7 @@ from contextlib import contextmanager
 app = Flask(__name__)
 
 # Get the connection URL from environment variable or fallback to default
-url = os.getenv("DATABASE_URL", "mysql://root:YHwYuhkYhEKsOuxhDQVcMhemgTMdDbKU@switchback.proxy.rlwy.net:59007/railway")
+url = os.getenv("DATABASE_URL", "mysql://root:wwtnFAOjBSwYlQftpdsQZUVaVlCbmjZt@yamabiko.proxy.rlwy.net:26341/railway")
 
 # Parse the URL
 parsed_url = urlparse(url)

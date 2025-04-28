@@ -6,6 +6,6 @@ services:
     startCommand: gunicorn app:app
     envVars:
       - key: DATABASE_URL
-        value: mysql://root:YHwYuhkYhEKsOuxhDQVcMhemgTMdDbKU@switchback.proxy.rlwy.net:59007/railway
+        value: mysql://root:wwtnFAOjBSwYlQftpdsQZUVaVlCbmjZt@yamabiko.proxy.rlwy.net:26341/railway
       - key: FLASK_ENV
         value: production
