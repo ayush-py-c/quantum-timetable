@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add User</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+    }
+    .neon-glow {
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(56, 189, 248, 0.5);
+    }
+    .card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 8px 32px rgba(2, 6, 23, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+    }
+    .form-input {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: rgba(56, 189, 248, 0.8);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+    .form-input::placeholder {
+      color: rgba(226, 232, 240, 0.5);
+    }
+    .btn-submit {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.7);
+    }
+    .btn-submit::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: rotate(30deg);
+      transition: all 0.5s ease;
+    }
+    .btn-submit:hover::after {
+      left: 100%;
+    }
+    .input-group {
+      position: relative;
+    }
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 1rem;
+      color: rgba(56, 189, 248, 0.7);
+    }
+    .input-with-icon {
+      padding-left: 2.5rem;
+    }
+  </style>
+</head>
+<body class="p-6">
+  <div class="max-w-lg mx-auto">
+    <header class="mb-8 text-center">
+      <h1 class="text-3xl font-bold mb-4 neon-glow tracking-wider">ADD USER</h1>
+      <div class="h-1 w-24 bg-gradient-to-r from-sky-400 to-blue-500 mx-auto rounded-full mb-6"></div>
+      <p class="text-sky-200 opacity-80">Add a new user to the system</p>
+    </header>
+
+    <div class="card rounded-xl p-8 mb-8">
+      <form method="POST" action="/add_user" class="space-y-6">
+        <div class="input-group">
+          <div class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+            </svg>
+          </div>
+          <input class="form-input input-with-icon rounded-lg p-3 w-full" type="text" id="user_id" name="user_id" placeholder="User ID" required>
+        </div>
+
+        <div class="input-group">
+          <div class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v1H2V5zM2 8h16v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8z" />
+            </svg>
+          </div>
+          <input class="form-input input-with-icon rounded-lg p-3 w-full" type="text" id="user_name" name="user_name" placeholder="User Name" required>
+        </div>
+
+        <div class="input-group">
+          <div class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M6 2a1 1 0 00-1 1v1h10V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zM4 6v10a2 2 0 002 2h8a2 2 0 002-2V6H4z" />
+            </svg>
+          </div>
+          <input class="form-input input-with-icon rounded-lg p-3 w-full" type="text" id="designation" name="designation" placeholder="Designation" required>
+        </div>
+
+        <div class="input-group">
+          <div class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M2.94 6.94A7.978 7.978 0 0110 4c4.42 0 8 3.58 8 8 0 1.42-.38 2.76-1.06 3.94L2.94 6.94z" />
+            </svg>
+          </div>
+          <input class="form-input input-with-icon rounded-lg p-3 w-full" type="email" id="e_mail" name="e_mail" placeholder="Email" required>
+        </div>
+
+        <div class="input-group">
+          <div class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M4 3a1 1 0 00-1 1v12a1 1 0 001 1h5v-2H5V5h10v3h2V4a1 1 0 00-1-1H4z" />
+            </svg>
+          </div>
+          <textarea class="form-input input-with-icon rounded-lg p-3 w-full" id="address" name="address" placeholder="Address" rows="3" required></textarea>
+        </div>
+
+        <button class="btn-submit text-white px-6 py-3 rounded-lg font-semibold w-full" type="submit">
+          Add User
+        </button>
+        <div class="max-w-lg mx-auto">
+
+            <!-- Back Button -->
+            <div class="mb-6">
+              <a href="/" class="inline-flex items-center px-4 py-2 rounded-md text-sky-300 hover:text-white bg-slate-800/50 hover:bg-slate-700 border border-sky-500 transition duration-200 shadow-md hover:shadow-sky-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M12.707 15.707a1 1 0 01-1.414 0L6.586 11l4.707-4.707a1 1 0 111.414 1.414L9.414 11l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Back
+              </a>
+            </div>
+      </form>
+    </div>
+
+    <footer class="text-center text-sky-200/60 text-sm mt-12">
+      <p>© 2025 Quantum Timetable System • All rights reserved</p>
+    </footer>
+  </div>
+</body>
+</html>
