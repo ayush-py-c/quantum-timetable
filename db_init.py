@@ -2,7 +2,7 @@ import mysql.connector
 from urllib.parse import urlparse
 
 # Parse the connection URL
-url = "mysql://root:wwtnFAOjBSwYlQftpdsQZUVaVlCbmjZt@yamabiko.proxy.rlwy.net:26341/railway"
+url = "mysql://root:bbkrrOQWsbwkZOCPPwbamagIiGfIOvKd@mainline.proxy.rlwy.net:50114/railway"
 parsed_url = urlparse(url)
 
 # Extract connection parameters
