@@ -1,5 +1,6 @@
 
-![image](https://github.com/user-attachments/assets/d00643c2-33ff-4607-9d4b-6556fe6f4b85)
+![image](https://github.com/user-attachments/assets/79bf0075-f0db-4756-989c-a3d00c79a89b)
+
 
 #  Quantum Timetable System
 
