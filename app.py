@@ -1,32 +1,22 @@
 import os
 import time
-from urllib.parse import urlparse
-import mysql.connector
-from mysql.connector import Error
+from dotenv import load_dotenv
+import psycopg
 from flask import Flask, render_template, request, redirect
 from contextlib import contextmanager
 
+# Load environment variables
+load_dotenv()
+
 app = Flask(__name__)
 
-# Get the connection URL from environment variable or fallback to default
-url = os.getenv("DATABASE_URL", "mysql://root:MZCEtRFCHEgDmEOmQukoTZmRDqvCYEvZ@switchyard.proxy.rlwy.net:49211/railway")
-
-# Parse the URL
-parsed_url = urlparse(url)
-username = parsed_url.username
-password = parsed_url.password
-host = parsed_url.hostname
-port = parsed_url.port
-database = parsed_url.path.lstrip('/')
+# Get the connection URL from environment variable
+url = os.getenv("DATABASE_URL")
+if not url:
+    raise RuntimeError("DATABASE_URL not set. Provide your Neon connection string in .env or environment.")
 
 def get_connection():
-    return mysql.connector.connect(
-        user=username,
-        password=password,
-        host=host,
-        port=port,
-        database=database
-    )
+    return psycopg.connect(url)
 
 @contextmanager
 def get_db_connection():
@@ -35,7 +25,7 @@ def get_db_connection():
         conn = get_connection()
         yield conn
     finally:
-        if conn is not None and conn.is_connected():
+        if conn is not None:
             conn.close()
 
 @app.route('/')
@@ -77,17 +67,16 @@ def add_entry():
             try:
                 conn = get_connection()
                 cursor = conn.cursor()
-                conn.start_transaction()
-                cursor.execute(
-                    "INSERT INTO time_slot (user_id, course_id, teacher_id, date_and_time) VALUES (%s, %s, %s, %s)",
-                    (user_id, course_id, teacher_id, date_time)
-                )
-                conn.commit()
+                with conn.transaction():
+                    cursor.execute(
+                        "INSERT INTO time_slot (user_id, course_id, teacher_id, date_and_time) VALUES (%s, %s, %s, %s)",
+                        (user_id, course_id, teacher_id, date_time)
+                    )
                 return redirect('/')
-            except Error as e:
+            except psycopg.errors.OperationalError as e:
                 if conn:
                     conn.rollback()
-                if "lock wait timeout" in str(e).lower():
+                if "timeout" in str(e).lower():
                     retry_count += 1
                     if retry_count < max_retries:
                         time.sleep(backoff_time * (2 ** (retry_count - 1)))
@@ -96,8 +85,12 @@ def add_entry():
                         return "Database timeout after multiple retries. Please try again later.", 500
                 else:
                     return f"Database error: {str(e)}", 500
+            except Exception as e:
+                if conn:
+                    conn.rollback()
+                return f"Database error: {str(e)}", 500
             finally:
-                if conn is not None and conn.is_connected():
+                if conn is not None:
                     conn.close()
     return render_template("add_entry.html")
 

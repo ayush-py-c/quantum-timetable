@@ -1,28 +1,45 @@
-import mysql.connector
-from urllib.parse import urlparse
+import os
+from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
+from dotenv import load_dotenv
+import psycopg
 
-# Parse the connection URL
-url = "mysql://root:MZCEtRFCHEgDmEOmQukoTZmRDqvCYEvZ@switchyard.proxy.rlwy.net:49211/railway"
+# Load environment variables from .env if present
+load_dotenv()
+
+# Read Neon/Postgres connection URL from env
+# Examples:
+#   postgresql://user:password@host/dbname?sslmode=require
+#   postgres://user:password@host/dbname?sslmode=require
+url = os.getenv("DATABASE_URL") or os.getenv("NEON_DATABASE_URL")
+if not url:
+    raise RuntimeError(
+        "DATABASE_URL (or NEON_DATABASE_URL) not set. Provide your Neon connection string."
+    )
+
+# Ensure sslmode=require for Neon
 parsed_url = urlparse(url)
-
-# Extract connection parameters
-username = parsed_url.username
-password = parsed_url.password
-host = parsed_url.hostname
-port = parsed_url.port
-database = parsed_url.path.lstrip('/')  # 'railway'
-
-# Connect directly to the Railway database
-connection = mysql.connector.connect(
-    user=username,
-    password=password,
-    host=host,
-    port=port,
-    database=database
+query = parse_qs(parsed_url.query)
+if "sslmode" not in query:
+    query["sslmode"] = ["require"]
+new_query = urlencode({k: v[0] for k, v in query.items()})
+url_with_ssl = urlunparse(
+    (
+        parsed_url.scheme,
+        parsed_url.netloc,
+        parsed_url.path,
+        parsed_url.params,
+        new_query,
+        parsed_url.fragment,
+    )
 )
+
+# Connect to Neon/Postgres
+connection = psycopg.connect(url_with_ssl)
 cursor = connection.cursor()
 
 try:
+    # Extract database name for logging
+    database = parsed_url.path.lstrip("/") or "public"
     print(f"Using database: {database}")
 
     # Step 1: Create tables
@@ -58,7 +75,7 @@ try:
             user_id VARCHAR(20),
             course_id VARCHAR(20),
             teacher_id VARCHAR(20),
-            date_and_time DATETIME,
+            date_and_time TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES user_details(user_id),
             FOREIGN KEY (course_id) REFERENCES course_details(course_id),
             FOREIGN KEY (teacher_id) REFERENCES teacher_details(teacher_id)
@@ -78,7 +95,11 @@ try:
         VALUES 
         ('u1', 'Aryan', 'Professor', 'aryan@example.com', 'Bangalore'),
         ('u2', 'Neha', 'Assistant Professor', 'neha@example.com', 'Delhi')
-        ON DUPLICATE KEY UPDATE user_name=VALUES(user_name);
+        ON CONFLICT (user_id) DO UPDATE SET
+            user_name = EXCLUDED.user_name,
+            designation = EXCLUDED.designation,
+            e_mail = EXCLUDED.e_mail,
+            address = EXCLUDED.address;
     """)
 
     cursor.execute("""
@@ -86,7 +107,10 @@ try:
         VALUES 
         ('t1', 'Dr. Sharma', 'PhD Mathematics', 9876),
         ('t2', 'Prof. Roy', 'M.Tech Physics', 91234)
-        ON DUPLICATE KEY UPDATE teacher_name=VALUES(teacher_name);
+        ON CONFLICT (teacher_id) DO UPDATE SET
+            teacher_name = EXCLUDED.teacher_name,
+            qualifications = EXCLUDED.qualifications,
+            phone_no = EXCLUDED.phone_no;
     """)
 
     cursor.execute("""
@@ -94,7 +118,10 @@ try:
         VALUES 
         ('c1', 'Discrete Math', 't1', 101),
         ('c2', 'Quantum Physics', 't2', 102)
-        ON DUPLICATE KEY UPDATE course_name=VALUES(course_name);
+        ON CONFLICT (course_id) DO UPDATE SET
+            course_name = EXCLUDED.course_name,
+            teacher_id = EXCLUDED.teacher_id,
+            room_no = EXCLUDED.room_no;
     """)
 
     cursor.execute("""
@@ -107,13 +134,18 @@ try:
     connection.commit()
     print("✅ Tables created and sample data inserted.")
 
-    # Step 3: Show tables
-    cursor.execute("SHOW TABLES;")
+    # Step 3: Show tables in public schema (Postgres)
+    cursor.execute("""
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = 'public'
+        ORDER BY table_name;
+    """)
     print(f"Tables in {database} database:")
-    for table in cursor.fetchall():
-        print(f"- {table[0]}")
+    for (table_name,) in cursor.fetchall():
+        print(f"- {table_name}")
 
-except mysql.connector.Error as error:
+except psycopg.Error as error:
     print(f"❌ Error: {error}")
     connection.rollback()
 
